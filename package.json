@@ -1,0 +1,20 @@
+{
+  "name": "oip-seo",
+  "version": "1.0.3",
+  "description": "Quickly and easily generate SEO & linking friendly meta tags from OIP artifacts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "OIP",
+    "Alexandria",
+    "SEO",
+    "SSR",
+    "Meta",
+    "Tags",
+    "unfurl"
+  ],
+  "author": "Skylar Ostler <me@skylarostler.com>",
+  "license": "GPL-3.0"
+}
