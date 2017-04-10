@@ -106,9 +106,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 			metaTags += tagGen('og:video:height', "30");
 
 			// Optional Tags
-
-			if (files[0])
-				metaTags += tagGen('video:duration', parseInt(files[0].duration)); 
+			metaTags += tagGen('video:duration', parseInt(files[0].duration));
 		}
 
 	} else if (artifact.type == "video"){
@@ -124,8 +122,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 			metaTags += tagGen('og:video:type', "video/mp4");
 
 			// Optional Tags
-			if (files[0])
-				metaTags += tagGen('video:duration', parseInt(files[0].duration));
+			metaTags += tagGen('video:duration', parseInt(files[0].duration));
 		}
 
 	} else if (artifact.type == "podcast"){
@@ -154,8 +151,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 		}
 
 		// Optional Tags
-		if (files[0])
-			metaTags += tagGen('video:duration', parseInt(files[0].duration));
+		metaTags += tagGen('video:duration', parseInt(files[0].duration));
 		
 	} else if (artifact.type == "thing"){
 		//################################
@@ -271,8 +267,9 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 		var split = url.split('/');
 
 		if (!cost){
+			var playerURL = artifact_link.slice(0, -(artifact_link.split('/')[artifact_link.split('/').length - 1].length)) + 'player/' + artifact_link.split('/')[artifact_link.split('/').length - 1];
 			metaTags += tagGen('twitter:card', "player", true);
-			metaTags += tagGen('twitter:player', artifact_link, true);
+			metaTags += tagGen('twitter:player', playerURL, true);
 			metaTags += tagGen('twitter:player:stream', mainURL, true);
 			metaTags += tagGen('twitter:player:content_type', "video/mp4", true);
 			metaTags += tagGen('twitter:player:width', "720", true);
