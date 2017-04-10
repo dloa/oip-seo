@@ -195,10 +195,9 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 	var metaTags = '';
 	var IPFS_URL = 'https://ipfs.alexandria.io/ipfs/'
 
-	metaTags += tagGen('og:site_name', "Alexandria.io");
-	metaTags += tagGen('og:url', url);
-	metaTags += tagGen('og:title', artifact.info.title.replace(/"/g,'\"'));
-	metaTags += tagGen('og:description', artifact.info.description.replace(/(")/g,'\"'));
+	metaTags += tagGen('twitter:site', "@alexandria");
+	metaTags += tagGen('twitter:title', artifact.info.title.replace(/"/g,'\"'));
+	metaTags += tagGen('twitter:description', artifact.info.description.replace(/(")/g,'\"'));
 
 	var coverfname = '';
 	var files = '';
@@ -232,7 +231,7 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 		imageURL = "http://" + domain + '/img/cover_placeholder.jpg';
 
 	if (imageURL){
-		metaTags += tagGen('og:image', imageURL);
+		metaTags += tagGen('twitter:image', imageURL);
 	}
 
 	if (typeof files == 'object')
@@ -270,7 +269,7 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 
 		if (!cost){
 			metaTags += tagGen('twitter:card', "player", true);
-			metaTags += tagGen('twitter:player', "http://" + domain + '/player/' + split[4], true);
+			metaTags += tagGen('twitter:player', url, true);
 			metaTags += tagGen('twitter:player:stream', mainURL, true);
 			metaTags += tagGen('twitter:player:content_type', "video/mp4", true);
 			metaTags += tagGen('twitter:player:width', "720", true);
