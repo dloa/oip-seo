@@ -42,9 +42,10 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 
 	var metaTags = '';
 	var IPFS_URL = 'https://ipfs.alexandria.io/ipfs/'
+	var artifact_link = "https://alexandria.io/browser/" + url.split('/')[url.split('/').length -1];
 
 	metaTags += tagGen('og:site_name', "Alexandria.io");
-	metaTags += tagGen('og:url', url);
+	metaTags += tagGen('og:url', artifact_link);
 	metaTags += tagGen('og:title', artifact.info.title.replace(/"/g,'\"'));
 	metaTags += tagGen('og:description', artifact.info.description.replace(/(")/g,'\"'));
 
@@ -77,7 +78,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 	imageURL = encodeURI(imageURL);
 
 	if (!imageURL || imageURL == '' || !coverfname)
-		imageURL = "http://" + domain + '/img/cover_placeholder.jpg';
+		imageURL = "https://" + domain + '/img/cover_placeholder.jpg';
 
 	if (imageURL){
 		metaTags += tagGen('og:image', imageURL);
@@ -105,8 +106,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 			metaTags += tagGen('og:video:height', "30");
 
 			// Optional Tags
-			if (files[0])
-				metaTags += tagGen('video:duration', parseInt(files[0].duration));
+			metaTags += tagGen('video:duration', parseInt(files[0].duration));
 		}
 
 	} else if (artifact.type == "video"){
@@ -122,8 +122,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 			metaTags += tagGen('og:video:type', "video/mp4");
 
 			// Optional Tags
-			if (files[0])
-				metaTags += tagGen('video:duration', parseInt(files[0].duration));
+			metaTags += tagGen('video:duration', parseInt(files[0].duration));
 		}
 
 	} else if (artifact.type == "podcast"){
@@ -152,8 +151,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 		}
 
 		// Optional Tags
-		if (files[0])
-			metaTags += tagGen('video:duration', parseInt(files[0].duration));
+		metaTags += tagGen('video:duration', parseInt(files[0].duration));
 		
 	} else if (artifact.type == "thing"){
 		//################################
@@ -193,7 +191,8 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 
 
 	var metaTags = '';
-	var IPFS_URL = 'https://ipfs.alexandria.io/ipfs/'
+	var IPFS_URL = 'https://ipfs.alexandria.io/ipfs/';
+	var artifact_link = "https://alexandria.io/browser/" + url.split('/')[url.split('/').length -1];
 
 	metaTags += tagGen('twitter:site', "@alexandria");
 	metaTags += tagGen('twitter:title', artifact.info.title.replace(/"/g,'\"'));
@@ -228,7 +227,7 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 	imageURL = encodeURI(imageURL);
 
 	if (!imageURL || imageURL == '' || !coverfname)
-		imageURL = "http://" + domain + '/img/cover_placeholder.jpg';
+		imageURL = "https://" + domain + '/img/cover_placeholder.jpg';
 
 	if (imageURL){
 		metaTags += tagGen('twitter:image', imageURL);
@@ -269,7 +268,7 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 
 		if (!cost){
 			metaTags += tagGen('twitter:card', "player", true);
-			metaTags += tagGen('twitter:player', url, true);
+			metaTags += tagGen('twitter:player', artifact_link, true);
 			metaTags += tagGen('twitter:player:stream', mainURL, true);
 			metaTags += tagGen('twitter:player:content_type', "video/mp4", true);
 			metaTags += tagGen('twitter:player:width', "720", true);
