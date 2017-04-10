@@ -1,6 +1,6 @@
 {
   "name": "oip-seo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Quickly and easily generate SEO & linking friendly meta tags from OIP artifacts",
   "main": "index.js",
   "scripts": {
