@@ -106,7 +106,8 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 			metaTags += tagGen('og:video:height', "30");
 
 			// Optional Tags
-			metaTags += tagGen('video:duration', parseInt(files[0].duration));
+			if (files[0])
+				metaTags += tagGen('video:duration', parseInt(files[0].duration));
 		}
 
 	} else if (artifact.type == "video"){
@@ -122,7 +123,8 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 			metaTags += tagGen('og:video:type', "video/mp4");
 
 			// Optional Tags
-			metaTags += tagGen('video:duration', parseInt(files[0].duration));
+			if (files[0])
+				metaTags += tagGen('video:duration', parseInt(files[0].duration));
 		}
 
 	} else if (artifact.type == "podcast"){
@@ -151,7 +153,8 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 		}
 
 		// Optional Tags
-		metaTags += tagGen('video:duration', parseInt(files[0].duration));
+		if (files[0])
+			metaTags += tagGen('video:duration', parseInt(files[0].duration));
 		
 	} else if (artifact.type == "thing"){
 		//################################
