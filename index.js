@@ -197,10 +197,6 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 	var IPFS_URL = 'https://ipfs.alexandria.io/ipfs/';
 	var artifact_link = "https://alexandria.io/browser/" + url.split('/')[url.split('/').length -1];
 
-	metaTags += tagGen('twitter:site', "@alexandria");
-	metaTags += tagGen('twitter:title', artifact.info.title.replace(/"/g,'\"'));
-	metaTags += tagGen('twitter:description', artifact.info.description.replace(/(")/g,'\"'));
-
 	var coverfname = '';
 	var files = '';
 	if (artifact.storage && artifact.storage.files){
@@ -214,6 +210,22 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 			coverfname = files[file].fname;
 		}
 	}
+
+	if ( (artifact.type != "music") && (artifact.type != "video") ){
+		//################################
+		//             NON AUDIO/VIDEO ARTIFACTS
+		//################################
+		if (!coverfname) {
+			metaTags += tagGen('twitter:card', "summary", true);
+		} else {
+			metaTags += tagGen('twitter:card', "summary_large_image", true);
+		}
+
+	}
+	metaTags += tagGen('twitter:site', "@alexandria");
+	metaTags += tagGen('twitter:title', artifact.info.title.replace(/"/g,'\"'));
+	metaTags += tagGen('twitter:description', artifact.info.description.replace(/(")/g,'\"'));
+
 
 	if (files[0] == 'object')
 		var mainURL = IPFS_URL + (oip ? artifact.storage.location : artifact.torrent) + '/' + files[0].fname;
@@ -279,15 +291,6 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 			metaTags += tagGen('twitter:data2', priceStr + ' / ' + durStr, true);
 		}
 
-	} else {
-		//################################
-		//             NON AUDIO/VIDEO ARTIFACTS
-		//################################
-		if (!coverfname) {
-			metaTags += tagGen('twitter:card', "summary", true);
-		} else {
-			metaTags += tagGen('twitter:card', "summary_large_image", true);
-		}
 	} 
 
 	return metaTags;
