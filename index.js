@@ -211,22 +211,6 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 		}
 	}
 
-	if ( (artifact.type != "music") && (artifact.type != "video") ){
-		//################################
-		//             NON AUDIO/VIDEO ARTIFACTS
-		//################################
-		if (!coverfname) {
-			metaTags += tagGen('twitter:card', "summary", true);
-		} else {
-			metaTags += tagGen('twitter:card', "summary_large_image", true);
-		}
-
-	}
-	metaTags += tagGen('twitter:site', "@alexandria");
-	metaTags += tagGen('twitter:title', artifact.info.title.replace(/"/g,'\"'));
-	metaTags += tagGen('twitter:description', artifact.info.description.replace(/(")/g,'\"'));
-
-
 	if (files[0] == 'object')
 		var mainURL = IPFS_URL + (oip ? artifact.storage.location : artifact.torrent) + '/' + files[0].fname;
 	else if (artifact.info['extra-info'] && artifact.info['extra-info'].filename && typeof artifact.info['extra-info'].filename == 'string')
@@ -240,6 +224,30 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 
 	mainURL = encodeURI(mainURL);
 	imageURL = encodeURI(imageURL);
+
+
+	if ( (artifact.type != "music") && (artifact.type != "video") ){
+		//################################
+		//             NON AUDIO/VIDEO ARTIFACTS
+		//################################
+		if (!coverfname) {
+			metaTags += tagGen('twitter:card', "summary", true);
+		} else {
+			/* Need cover image dimensions saved with artifact metadata for large image summary cards
+		    if ( (imgHeight >= 157) && (imgWidth >= 300) && (aspectRatio >= .5) && (aspectRatio <= 1) ) {
+				metaTags += tagGen('twitter:card', "summary_large_image", true);
+		    } else {
+				metaTags += tagGen('twitter:card', "summary", true);
+		    }
+		    */
+		    // In the meantime, just use the regular summary card
+			metaTags += tagGen('twitter:card', "summary", true);
+		}
+
+	}
+	metaTags += tagGen('twitter:site', "@alexandria");
+	metaTags += tagGen('twitter:title', artifact.info.title.replace(/"/g,'\"'));
+	metaTags += tagGen('twitter:description', artifact.info.description.replace(/(")/g,'\"'));
 
 	if (!imageURL || imageURL == '' || !coverfname)
 		imageURL = "https://" + domain + '/img/cover_placeholder.jpg';
