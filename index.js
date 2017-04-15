@@ -279,31 +279,15 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 			metaTags += tagGen('twitter:data2', priceStr + ' / ' + durStr, true);
 		}
 
-	} else if (artifact.type == "podcast"){
+	} else {
 		//################################
-		//            PODCAST
+		//             NON AUDIO/VIDEO ARTIFACTS
 		//################################
-		
-	} else if (artifact.type == "pdf"){
-		//################################
-		//              PDF
-		//################################
-		
-	} else if (artifact.type == "movie"){
-		//################################
-		//            MOVIE
-		//################################
-		
-	} else if (artifact.type == "thing"){
-		//################################
-		//            THING
-		//################################
-		
-	} else if (artifact.type == "html"){
-		//################################
-		//             HTML
-		//################################
-		
+		if (!coverfname) {
+			metaTags += tagGen('twitter:card', "summary", true);
+		} else {
+			metaTags += tagGen('twitter:card', "summary_large_image", true);
+		}
 	} 
 
 	return metaTags;
