@@ -145,7 +145,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 		//################################
 		metaTags += tagGen('og:type', "video.movie");
 
-		// Music URL tags
+		// Video URL tags
 		if (!cost){
 			metaTags += tagGen('og:video', mainURL);
 			metaTags += tagGen('og:video:secure_url', mainURL);
@@ -243,9 +243,9 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 	else
 		var cost = '';
 
-	if (artifact.type == "music"){
+	if ( (artifact.type == "music") || (artifact.type == "video") ){
 		//################################
-		//            MUSIC
+		//            AUDIO/VIDEO
 		//################################
 
 		var artist = (oip ? artifact.info.extraInfo.artist : artifact.info['extra-info'].artist);
@@ -256,29 +256,29 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 		else
 			var durStr = 0;
 
-		metaTags += tagGen('twitter:card', "summary_large_image", true);
-
-		metaTags += tagGen('twitter:label1', "Artist", true);
-		metaTags += tagGen('twitter:data1', artist, true);
-		metaTags += tagGen('twitter:label2', "Cost/Length", true);
-		metaTags += tagGen('twitter:data2', priceStr + ' / ' + durStr, true);
-
-	} else if (artifact.type == "video"){
-		//################################
-		//            VIDEO
-		//################################
-		var split = url.split('/');
-
 		if (!cost){
 			var playerURL = artifact_link.slice(0, -(artifact_link.split('/')[artifact_link.split('/').length - 1].length)) + 'player/' + artifact_link.split('/')[artifact_link.split('/').length - 1];
 			metaTags += tagGen('twitter:card', "player", true);
 			metaTags += tagGen('twitter:player', playerURL, true);
 			metaTags += tagGen('twitter:player:stream', mainURL, true);
-			metaTags += tagGen('twitter:player:content_type', "video/mp4", true);
-			metaTags += tagGen('twitter:player:width', "720", true);
-			metaTags += tagGen('twitter:player:height', "480", true);
+			if (artifact.type == "video") {
+				metaTags += tagGen('twitter:player:content_type', "video/mp4", true);
+				metaTags += tagGen('twitter:player:width', "821", true);
+				metaTags += tagGen('twitter:player:height', "461", true);
+			} else {
+				metaTags += tagGen('twitter:player:content_type', "audio/mpeg", true);
+				metaTags += tagGen('twitter:player:width', "403", true);
+				metaTags += tagGen('twitter:player:height', "28", true);
+			}
+		} else {
+
+			metaTags += tagGen('twitter:card', "summary_large_image", true);
+			metaTags += tagGen('twitter:label1', "Artist", true);
+			metaTags += tagGen('twitter:data1', artist, true);
+			metaTags += tagGen('twitter:label2', "Cost/Length", true);
+			metaTags += tagGen('twitter:data2', priceStr + ' / ' + durStr, true);
 		}
-		
+
 	} else if (artifact.type == "podcast"){
 		//################################
 		//            PODCAST
