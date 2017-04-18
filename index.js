@@ -14,9 +14,40 @@ var OIP_SEO = function () {
 OIP_SEO.prototype.generateTags = function(oipArtifact, url, domain){
 	var metaTags = '';
 
+	metaTags += this.generateBasicTags(oipArtifact, url, domain);
 	metaTags += this.generateOGTags(oipArtifact, url, domain);
 	metaTags += this.generateTCTags(oipArtifact, url, domain);
 
+	return metaTags;
+}
+
+// Method Name: OIP_SEO.generateTCTags
+// Description: Generates Twitter Card meta tags.
+// Paramaters: 
+// 		- oipArtifact: 	The OIP Artifact we will be generating the meta tags for.
+// 		- url: 			The Permalink back to this page
+// Returns: Returns Twitter Card compliant meta tags.
+
+OIP_SEO.prototype.generateBasicTags = function(oipArtifact, url, domain){
+	var artifact = '';
+
+	var oip = false;
+
+	// alexandria-media
+	if (oipArtifact['media-data']){
+		artifact = oipArtifact['media-data']['alexandria-media'];
+	} else { //OIP
+		artifact = oipArtifact['oip-041'].artifact;
+		oip = true;
+	}
+
+	var metaTags = '';
+	var IPFS_URL = 'https://ipfs.alexandria.io/ipfs/';
+	var artifact_link = "https://alexandria.io/browser/" + url.split('/')[url.split('/').length -1];
+
+	metaTags += '<title>'+ artifact.info.title.replace(/"/g,'\"') + ' | ΛLΞXΛNDRIΛ</title>';
+	metaTags += tagGen('description', artifact.info.description.replace(/(")/g,'\"'));
+	
 	return metaTags;
 }
 
