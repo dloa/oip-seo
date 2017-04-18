@@ -134,7 +134,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 			metaTags += tagGen('og:video', mainURL);
 			metaTags += tagGen('og:video:secure_url', mainURL);
 			metaTags += tagGen('og:video:type', "audio/mpeg");
-			metaTags += tagGen('og:video:height', "30");
+			metaTags += tagGen('og:video:height', "190");
 
 			// Optional Tags
 			if (files[0])
@@ -319,7 +319,7 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 			} else {
 				metaTags += tagGen('twitter:player:content_type', "audio/mpeg", true);
 				metaTags += tagGen('twitter:player:width', "403", true);
-				metaTags += tagGen('twitter:player:height', "28", true);
+				metaTags += tagGen('twitter:player:height', "190", true);
 			}
 		} else {
 
