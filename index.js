@@ -21,12 +21,12 @@ OIP_SEO.prototype.generateTags = function(oipArtifact, url, domain){
 	return metaTags;
 }
 
-// Method Name: OIP_SEO.generateTCTags
-// Description: Generates Twitter Card meta tags.
+// Method Name: OIP_SEO.generateBasicTags
+// Description: Generates basic SEO meta tags.
 // Paramaters: 
 // 		- oipArtifact: 	The OIP Artifact we will be generating the meta tags for.
 // 		- url: 			The Permalink back to this page
-// Returns: Returns Twitter Card compliant meta tags.
+// Returns: Returns basic seo meta tags.
 
 OIP_SEO.prototype.generateBasicTags = function(oipArtifact, url, domain){
 	var artifact = '';
@@ -46,7 +46,7 @@ OIP_SEO.prototype.generateBasicTags = function(oipArtifact, url, domain){
 	var artifact_link = "https://alexandria.io/browser/" + url.split('/')[url.split('/').length -1];
 
 	metaTags += '<title>'+ artifact.info.title.replace(/"/g,'\"') + ' | ΛLΞXΛNDRIΛ</title>';
-	metaTags += tagGen('description', artifact.info.description.replace(/(")/g,'\"'));
+	metaTags += tagGen('description', artifact.info.description.replace(/(")/g,'\"').slice(0,140));
 	
 	return metaTags;
 }
@@ -78,7 +78,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 	metaTags += tagGen('og:site_name', "Alexandria.io");
 	metaTags += tagGen('og:url', artifact_link);
 	metaTags += tagGen('og:title', artifact.info.title.replace(/"/g,'\"'));
-	metaTags += tagGen('og:description', artifact.info.description.replace(/(")/g,'\"'));
+	metaTags += tagGen('og:description', artifact.info.description.replace(/(")/g,'\"').slice(0,140));
 
 	var coverfname = '';
 	var files = '';
@@ -278,7 +278,7 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 	}
 	metaTags += tagGen('twitter:site', "@alexandria");
 	metaTags += tagGen('twitter:title', artifact.info.title.replace(/"/g,'\"'));
-	metaTags += tagGen('twitter:description', artifact.info.description.replace(/(")/g,'\"'));
+	metaTags += tagGen('twitter:description', artifact.info.description.replace(/(")/g,'\"').slice(0,140));
 
 	if (!imageURL || imageURL == '' || !coverfname)
 		imageURL = "https://" + domain + '/img/cover_placeholder.jpg';
