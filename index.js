@@ -12,6 +12,7 @@ var OIP_SEO = function () {
 // 		- domain: 		The domain
 // Returns: Returns meta tags.
 OIP_SEO.prototype.generateTags = function(oipArtifact, url, domain){
+
 	var metaTags = '';
 
 	metaTags += this.generateBasicTags(oipArtifact, url, domain);
@@ -37,8 +38,7 @@ OIP_SEO.prototype.generateBasicTags = function(oipArtifact, url, domain){
 	if (oipArtifact['media-data']){
 		artifact = oipArtifact['media-data']['alexandria-media'];
 	} else { //OIP
-		artifact = oipArtifact['oip-041'].artifact;
-		oip = true;
+		artifact = conformOIP(oipArtifact)['media-data']['alexandria-media'];
 	}
 
 	var metaTags = '';
@@ -46,8 +46,8 @@ OIP_SEO.prototype.generateBasicTags = function(oipArtifact, url, domain){
 	var artifact_link = "https://alexandria.io/browser/" + url.split('/')[url.split('/').length -1];
 
 	metaTags += '<title>'+ artifact.info.title.replace(/"/g,'\"') + ' | ΛLΞXΛNDRIΛ</title>';
-	metaTags += tagGen('description', artifact.info.description.replace(/(")/g,'\"').slice(0,140));
-	
+	metaTags += tagGen('description', artifact.info.description.replace(/(")/g,'\"').slice(0,140), true);
+
 	return metaTags;
 }
 
@@ -66,8 +66,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 	if (oipArtifact['media-data']){
 		artifact = oipArtifact['media-data']['alexandria-media'];
 	} else { //OIP
-		artifact = oipArtifact['oip-041'].artifact;
-		oip = true;
+		artifact = conformOIP(oipArtifact)['media-data']['alexandria-media'];
 	}
 
 
@@ -128,17 +127,17 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 		//################################
 		metaTags += tagGen('og:type', "music.song");
 
-
 		if (!cost){
 			// Music URL tags
-			metaTags += tagGen('og:video', mainURL);
-			metaTags += tagGen('og:video:secure_url', mainURL);
-			metaTags += tagGen('og:video:type', "audio/mpeg");
-			metaTags += tagGen('og:video:height', "190");
+			metaTags += tagGen('og:audio', mainURL);
+			metaTags += tagGen('og:audio:secure_url', mainURL);
+			metaTags += tagGen('og:audio:type', "audio/mpeg");
+			metaTags += tagGen('og:music:musician', artifact.info['extra-info'].artist);
 
 			// Optional Tags
 			if (files[0])
-				metaTags += tagGen('video:duration', parseInt(files[0].duration));
+				if(files[0].duration)
+					metaTags += tagGen('og:music:duration', parseInt(files[0].duration));
 		}
 
 	} else if (artifact.type == "video"){
@@ -155,7 +154,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 
 			// Optional Tags
 			if (files[0])
-				metaTags += tagGen('video:duration', parseInt(files[0].duration));
+				metaTags += tagGen('og:video:duration', parseInt(files[0].duration));
 		}
 
 	} else if (artifact.type == "podcast"){
@@ -185,7 +184,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 
 		// Optional Tags
 		if (files[0])
-			metaTags += tagGen('video:duration', parseInt(files[0].duration));
+			metaTags += tagGen('og:video:duration', parseInt(files[0].duration));
 		
 	} else if (artifact.type == "thing"){
 		//################################
@@ -219,8 +218,7 @@ OIP_SEO.prototype.generateTCTags = function(oipArtifact, url, domain){
 	if (oipArtifact['media-data']){
 		artifact = oipArtifact['media-data']['alexandria-media'];
 	} else { //OIP
-		artifact = oipArtifact['oip-041'].artifact;
-		oip = true;
+		artifact = conformOIP(oipArtifact)['media-data']['alexandria-media'];
 	}
 
 
@@ -356,6 +354,64 @@ function secondsToHms(d) {
     var mDisplay = m > 0 ? m + "m " : "";
     var sDisplay = s > 0 ? s + "s" : "";
     return hDisplay + mDisplay + sDisplay; 
+}
+
+function conformOIP(oipObject){
+	// Pull out of casing
+	var oip = oipObject["oip-041"];
+
+	var alexandriaObject = {  
+		"media-data":{  
+			"alexandria-media":{  
+				"torrent": oip.artifact.storage.location,
+				"publisher": oip.artifact.publisher,
+				"timestamp": oip.artifact.timestamp*1000,
+				"type": oip.artifact.type,
+				"info": {  
+					"title": oip.artifact.info.title,
+					"description":oip.artifact.info.description,
+					"year": oip.artifact.info.year,
+					"extra-info": oip.artifact.info.extraInfo ? oip.artifact.info.extraInfo : oip.artifact.info['extra-info']
+				},
+				"payment":oip.artifact.payment
+			},
+			"signature":oip.signature
+		},
+		"txid": oipObject.txid,
+		"block": oipObject.block
+	}
+
+	alexandriaObject["media-data"]["alexandria-media"]["info"]["extra-info"]["DHT Hash"] = oip.artifact.storage.location;
+
+	// Add artist name if it exists to the "publisher-name" for now. This is a hack as oip-041 standards do not include a publisher name. This might need to be updated in LibraryD to be included.
+	if (oip.artifact.info.extraInfo && oip.artifact.info.extraInfo.artist){
+		alexandriaObject['publisher-name'] = oip.artifact.info.extraInfo.artist;
+	}
+
+	if(oip.artifact.info['extra-info'] && oip.artifact.info['extra-info'].artist){
+		alexandriaObject['publisher-name'] = oip.artifact.info['extra-info'].artist;
+	}
+
+	// Conform each file to be fixed.
+	// Add files.
+	if (oip.artifact.storage.files){
+		var files = oip.artifact.storage.files;
+		for (var i = 0; i < files.length; i++) {
+			if (files[i].filename && !files[i].fname){
+				files[i].fname = files[i].filename;
+				delete files[i].filename;
+			}
+			if (files[i].displayname && !files[i].dname){
+				files[i].dname = files[i].displayname;
+				delete files[i].displayname;
+			}
+		}
+
+		alexandriaObject["media-data"]["alexandria-media"]["info"]["extra-info"].files = [];
+		alexandriaObject["media-data"]["alexandria-media"]["info"]["extra-info"].files = files;
+	}
+
+	return alexandriaObject;
 }
 
 // Expose OIP_SEO and all methods.
