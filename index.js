@@ -131,13 +131,13 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 			// Music URL tags
 			metaTags += tagGen('og:audio', mainURL);
 			metaTags += tagGen('og:audio:secure_url', mainURL);
-			metaTags += tagGen('og:audio:type', "audio/mpeg");
-			metaTags += tagGen('og:music:musician', artifact.info['extra-info'].artist);
+			metaTags += tagGen('og:audio:type', "audio/vnd.facebook.bridge");
+			metaTags += tagGen('music:musician', artifact.info['extra-info'].artist);
 
 			// Optional Tags
 			if (files[0])
 				if(files[0].duration)
-					metaTags += tagGen('og:music:duration', parseInt(files[0].duration));
+					metaTags += tagGen('music:duration', parseInt(files[0].duration));
 		}
 
 	} else if (artifact.type == "video"){
