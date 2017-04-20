@@ -132,7 +132,6 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 			metaTags += tagGen('og:audio', mainURL);
 			metaTags += tagGen('og:audio:secure_url', mainURL);
 			metaTags += tagGen('og:audio:type', "audio/vnd.facebook.bridge");
-			metaTags += tagGen('music:musician', artifact.info['extra-info'].artist);
 
 			// Optional Tags
 			if (files[0])
