@@ -93,7 +93,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 		}
 	}
 
-	if (files[0] == 'object')
+	if (typeof files[0] === 'object')
 		var mainURL = IPFS_URL + (oip ? artifact.storage.location : artifact.torrent) + '/' + files[0].fname;
 	else if (artifact.info['extra-info'] && artifact.info['extra-info'].filename && typeof artifact.info['extra-info'].filename == 'string')
 		var mainURL = IPFS_URL + artifact.torrent + '/' + artifact.info['extra-info'].filename;
