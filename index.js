@@ -114,7 +114,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 		metaTags += tagGen('og:image', imageURL);
 	}
 
-	if (typeof files == 'object')
+	if (typeof files[0] === 'object')
 		var cost = files[0].sugPlay;
 	else if (typeof artifact.payment.sug_tip == 'string')
 		var cost = artifact.payment.sug_tip.split(',')[0];
@@ -125,7 +125,7 @@ OIP_SEO.prototype.generateOGTags = function(oipArtifact, url, domain){
 		//################################
 		//            MUSIC
 		//################################
-		metaTags += tagGen('og:type', 'audio');
+		metaTags += tagGen('og:type', 'video.other');
 
 		if (!cost){
 			// Music URL tags
